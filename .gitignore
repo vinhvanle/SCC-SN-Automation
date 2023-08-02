@@ -1,0 +1,5 @@
+#WDIO specifics
+allure-results/
+
+debug/
+log/
