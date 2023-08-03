@@ -3,6 +3,8 @@
         "target": "es2020",
         "moduleResolution": "node",
         "module": "CommonJS",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
         "types" : [
             "node",
             "@wdio/globals/types",
