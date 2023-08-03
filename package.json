@@ -11,6 +11,7 @@
   "author": "VinhL",
   "license": "ISC",
   "devDependencies": {
+    "@types/supertest": "^2.0.12",
     "@wdio/allure-reporter": "^8.14.0",
     "@wdio/cli": "^8.14.2",
     "@wdio/cucumber-framework": "^8.14.0",
@@ -19,6 +20,7 @@
     "chai": "^4.3.7",
     "chromedriver": "^115.0.0",
     "dotenv": "^16.3.1",
+    "supertest": "^6.3.3",
     "wdio-chromedriver-service": "^8.1.1",
     "wdio-geckodriver-service": "^5.0.2"
   }
