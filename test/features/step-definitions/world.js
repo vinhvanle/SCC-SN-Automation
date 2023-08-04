@@ -1,9 +1,17 @@
-// import { setWorldConstructor } from "@wdio/cucumber-framework";
-// import chai from "chai"
+import { setWorldConstructor } from "@wdio/cucumber-framework";
+import chai from "chai";
 
-// class CustomWorld {
-//     constructor() {
-//         this.appid = "";
-//     }
-// }
-// setWorldConstructor(CustomWorld);
+/**
+ * @param {string} appid
+ * @param {string} testid
+ */
+class CustomWorld {
+
+    constructor() {
+        this.testid = "";
+    }
+
+
+}
+
+setWorldConstructor(CustomWorld);

@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "demo": "npx wdio wdio.conf.js --cucumberOpts.tagExpression='@demo'",
+    "smoke": "npx wdio wdio.conf.js --cucumberOpts.tagExpression='@smoke'",
     "wdio": "wdio run ./wdio.conf.js"
   },
   "author": "VinhL",
@@ -22,6 +24,7 @@
     "dotenv": "^16.3.1",
     "supertest": "^6.3.3",
     "wdio-chromedriver-service": "^8.1.1",
-    "wdio-geckodriver-service": "^5.0.2"
+    "wdio-geckodriver-service": "^5.0.2",
+    "winston": "^3.10.0"
   }
 }

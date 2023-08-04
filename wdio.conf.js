@@ -1,4 +1,9 @@
 import dotenv from "dotenv";
+dotenv.config();
+
+let headless = process.env.HEADLESS;
+let debug = process.env.DEBUG;
+
 
 export const config = {
   //
@@ -56,7 +61,7 @@ export const config = {
   capabilities: [
     {
       maxInstances: 5,
-      browserName: "chrome",
+      browserName: 'chrome',
       acceptInsecureCerts: true,
     },
     {
@@ -73,7 +78,7 @@ export const config = {
   // Define all options that are relevant for the WebdriverIO instance here
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
-  logLevel: "info",
+  logLevel: 'info',
   //
   // Set specific log levels per logger
   // loggers:
@@ -157,7 +162,7 @@ export const config = {
     // <boolean> fail if there are any undefined or pending steps
     strict: false,
     // <string> (expression) only execute the features or scenarios with tags matching the expression
-    tagExpression: "@demo",
+    tagExpression: "",
     // <number> timeout for step definitions
     timeout: 60000,
     // <boolean> Enable this config to treat undefined definitions as warnings.
@@ -240,8 +245,14 @@ export const config = {
    * @param {ITestCaseHookParameter} world    world object containing information on pickle and test step
    * @param {object}                 context  Cucumber World object
    */
-  // beforeScenario: function (world, context) {
-  // },
+  beforeScenario: function (world, context) {
+    let arr = world.pickle.name.split(/:/);
+    if(arr.length > 0) {
+      Object.assign(context, {testid: arr[0]});
+      this.testid = context.testid;
+    }
+    if(!context.testid) throw Error(`Error getting testid for current scenario: ${world.pickle.name}`);
+  },
   /**
    *
    * Runs before a Cucumber Step.
@@ -249,8 +260,9 @@ export const config = {
    * @param {IPickle}            scenario scenario pickle
    * @param {object}             context  Cucumber World object
    */
-  // beforeStep: function (step, scenario, context) {
-  // },
+  beforeStep: function (step, scenario, context) {
+    this.testid = context.testid;
+  },
   /**
    *
    * Runs after a Cucumber Step.

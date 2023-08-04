@@ -1,0 +1,185 @@
+{
+  "gherkinDocument": {
+    "feature": {
+      "tags": [],
+      "location": { "line": 1, "column": 1 },
+      "language": "en",
+      "keyword": "Feature",
+      "name": "Inventory App feature",
+      "description": "",
+      "children": [
+        {
+          "scenario": {
+            "id": "9",
+            "tags": [
+              {
+                "location": { "line": 2, "column": 5 },
+                "name": "@demo",
+                "id": "8"
+              }
+            ],
+            "location": { "line": 3, "column": 5 },
+            "keyword": "Scenario Outline",
+            "name": "<TestID>: Demo Inventory",
+            "description": "",
+            "steps": [
+              {
+                "id": "4",
+                "location": { "line": 4, "column": 9 },
+                "keyword": "Given ",
+                "keywordType": "Context",
+                "text": "As a standard user I login to inventory web app",
+                "dataTable": {
+                  "location": { "line": 5, "column": 13 },
+                  "rows": [
+                    {
+                      "id": "0",
+                      "location": { "line": 5, "column": 13 },
+                      "cells": [
+                        {
+                          "location": { "line": 5, "column": 15 },
+                          "value": "UserType"
+                        },
+                        {
+                          "location": { "line": 5, "column": 26 },
+                          "value": "Username"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "1",
+                      "location": { "line": 6, "column": 13 },
+                      "cells": [
+                        {
+                          "location": { "line": 6, "column": 15 },
+                          "value": "StdUser"
+                        },
+                        {
+                          "location": { "line": 6, "column": 26 },
+                          "value": "standard_user"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "2",
+                      "location": { "line": 7, "column": 13 },
+                      "cells": [
+                        {
+                          "location": { "line": 7, "column": 15 },
+                          "value": "ProbUser"
+                        },
+                        {
+                          "location": { "line": 7, "column": 26 },
+                          "value": "problem_user"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "3",
+                      "location": { "line": 8, "column": 13 },
+                      "cells": [
+                        {
+                          "location": { "line": 8, "column": 15 },
+                          "value": "PerfUser"
+                        },
+                        {
+                          "location": { "line": 8, "column": 26 },
+                          "value": "performance_glitch_user"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ],
+            "examples": [
+              {
+                "id": "7",
+                "tags": [],
+                "location": { "line": 12, "column": 9 },
+                "keyword": "Examples",
+                "name": "",
+                "description": "",
+                "tableHeader": {
+                  "id": "5",
+                  "location": { "line": 13, "column": 13 },
+                  "cells": [
+                    {
+                      "location": { "line": 13, "column": 15 },
+                      "value": "TestID"
+                    },
+                    {
+                      "location": { "line": 13, "column": 28 },
+                      "value": "NumberOfProducts"
+                    }
+                  ]
+                },
+                "tableBody": [
+                  {
+                    "id": "6",
+                    "location": { "line": 14, "column": 13 },
+                    "cells": [
+                      {
+                        "location": { "line": 14, "column": 15 },
+                        "value": "INTV_TC001"
+                      },
+                      { "location": { "line": 14, "column": 28 }, "value": "6" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "comments": [
+      {
+        "location": { "line": 9, "column": 1 },
+        "text": "        # Then Inventory page should list <NumberOfProducts>"
+      },
+      {
+        "location": { "line": 10, "column": 1 },
+        "text": "        # Then Validate all product have valid price"
+      }
+    ],
+    "uri": "C:\\Users\\vinhv\\Desktop\\SCC Automation\\test\\features\\inventory\\Inventory.feature"
+  },
+  "pickle": {
+    "id": "11",
+    "uri": "C:\\Users\\vinhv\\Desktop\\SCC Automation\\test\\features\\inventory\\Inventory.feature",
+    "astNodeIds": ["9", "6"],
+    "name": "INTV_TC001: Demo Inventory",
+    "language": "en",
+    "steps": [
+      {
+        "id": "10",
+        "text": "As a standard user I login to inventory web app",
+        "type": "Context",
+        "argument": {
+          "dataTable": {
+            "rows": [
+              { "cells": [{ "value": "UserType" }, { "value": "Username" }] },
+              {
+                "cells": [{ "value": "StdUser" }, { "value": "standard_user" }]
+              },
+              {
+                "cells": [{ "value": "ProbUser" }, { "value": "problem_user" }]
+              },
+              {
+                "cells": [
+                  { "value": "PerfUser" },
+                  { "value": "performance_glitch_user" }
+                ]
+              }
+            ]
+          }
+        },
+        "astNodeIds": ["4", "6"],
+        "keyword": "Given "
+      }
+    ],
+    "tags": [{ "name": "@demo", "astNodeId": "8" }]
+  },
+  "testCaseStartedId": "26"
+}
