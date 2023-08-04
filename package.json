@@ -5,9 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "demo": "npx wdio wdio.conf.js --cucumberOpts.tagExpression='@demo'",
-    "smoke": "npx wdio wdio.conf.js --cucumberOpts.tagExpression='@smoke'",
+    "demo": "set DEBUG=N && set HEADLESS=N && npx wdio wdio.conf.js --cucumberOpts.tagExpression='@demo'",
+    "smoke": "set DEBUG=Y && set HEADLESS=Y && npx wdio wdio.conf.js --cucumberOpts.tagExpression='@smoke'",
     "wdio": "wdio run ./wdio.conf.js"
   },
   "author": "VinhL",

@@ -4,7 +4,6 @@ import logger from "../../helper/logger.js";
 
 Then(/^Inventory page should (.*)\s?list (.*)$/, async function (negativeCheck, noOfProducts) {
   logger.info(`${this.testid}: Checking the price...`);
-  console.log(`>> Starting ${this.testid}...`);
     if (!noOfProducts)
       throw Error(`Invalid product count provided: ${noOfProducts}`);
     let eleArr = await $$(`.inventory_item_name`);

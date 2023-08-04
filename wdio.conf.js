@@ -1,9 +1,9 @@
 import dotenv from "dotenv";
 dotenv.config();
+import allure from "@wdio/allure-reporter";
 
 let headless = process.env.HEADLESS;
 let debug = process.env.DEBUG;
-
 
 export const config = {
   //
@@ -58,17 +58,45 @@ export const config = {
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
   // https://saucelabs.com/platform/platform-configurator
   //
+
   capabilities: [
+    /**
+     * Additional chrome options:
+     * --headless
+     * --disable-dev-shm-usage
+     * --no-sandbox
+     * --window-size=1920,1000
+     * --disable-gpu
+     * --proxy-server=https://domain
+     * binary=<location>
+     * --auth-server-whitelist="_"
+     */
     {
       maxInstances: 5,
-      browserName: 'chrome',
+      browserName: "chrome",
+      "goog:chromeOptions": {
+        args:
+          headless.toUpperCase() === "Y"
+            ? [
+                "--disable-web-security",
+                "--headless",
+                "--no-sandbox",
+                "--window-size=1920,1000",
+                "--disable-dev-shm-usage",
+              ]
+            : [],
+      },
       acceptInsecureCerts: true,
+      timeouts: { implicit: 10000, pageLoad: 20000, script: 30000 },
     },
-    {
-      maxInstances: 5,
-      browserName: "firefox",
-      acceptInsecureCerts: true,
-    },
+    // {
+    //   maxInstances: 5,
+    //   browserName: "firefox",
+    //   "moz:firefoxOptions": {
+    //     "args": headless.toUpperCase() === "Y" ? ["-headless"] : []
+    //   },
+    //   acceptInsecureCerts: true,
+    // },
   ],
 
   //
@@ -78,7 +106,7 @@ export const config = {
   // Define all options that are relevant for the WebdriverIO instance here
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
-  logLevel: 'info',
+  logLevel: debug.toUpperCase() === "Y" ? "info" : "error",
   //
   // Set specific log levels per logger
   // loggers:
@@ -140,7 +168,17 @@ export const config = {
   // Test reporter for stdout.
   // The only one supported by default is 'dot'
   // see also: https://webdriver.io/docs/dot-reporter
-  reporters: ["spec", ["allure", { outputDir: "allure-results" }]],
+  reporters: [
+    "spec",
+    [
+      "allure",
+      {
+        outputDir: "allure-results",
+        disableWebdriverStepsReporting: true,
+        useCucumberStepReporter: true,
+      },
+    ],
+  ],
 
   //
   // If you are using Cucumber you need to specify the location of your step definitions.
@@ -247,11 +285,14 @@ export const config = {
    */
   beforeScenario: function (world, context) {
     let arr = world.pickle.name.split(/:/);
-    if(arr.length > 0) {
-      Object.assign(context, {testid: arr[0]});
+    if (arr.length > 0) {
+      Object.assign(context, { testid: arr[0] });
       this.testid = context.testid;
     }
-    if(!context.testid) throw Error(`Error getting testid for current scenario: ${world.pickle.name}`);
+    if (!context.testid)
+      throw Error(
+        `Error getting testid for current scenario: ${world.pickle.name}`
+      );
   },
   /**
    *

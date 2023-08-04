@@ -7,7 +7,6 @@ import logger from "../../helper/logger.js";
 Given(/^As (a|an) (.*) user I login to inventory web app$/, async function (prefixTxt, userType, dataTable) {
     logger.info(`${this.testid}: Started to login sauce demo app...`);
     let dt = dataTable.hashes();
-    console.log(`>> Given step Test ID: ${this.testid}`);
 
     
     try {
