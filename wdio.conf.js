@@ -3,7 +3,9 @@ dotenv.config();
 import allure from "@wdio/allure-reporter";
 
 let headless = process.env.HEADLESS;
+// console.log(`>> value of HEADLESS flag: ${headless} type is ${typeof headless}`);
 let debug = process.env.DEBUG;
+// console.log(`>> value of DEBUG flag: ${debug} type is ${typeof debug}`);
 
 export const config = {
   //
@@ -74,17 +76,9 @@ export const config = {
     {
       maxInstances: 5,
       browserName: "chrome",
-      "goog:chromeOptions": {
+      'goog:chromeOptions': {
         args:
-          headless.toUpperCase() === "Y"
-            ? [
-                "--disable-web-security",
-                "--headless",
-                "--no-sandbox",
-                "--window-size=1920,1000",
-                "--disable-dev-shm-usage",
-              ]
-            : [],
+          headless === "Y" ? ["--headless", '--disable-gpu'] : [],
       },
       acceptInsecureCerts: true,
       timeouts: { implicit: 10000, pageLoad: 20000, script: 30000 },
@@ -106,7 +100,7 @@ export const config = {
   // Define all options that are relevant for the WebdriverIO instance here
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
-  logLevel: debug.toUpperCase() === "Y" ? "info" : "error",
+  logLevel: debug === "Y" ? "info" : "error",
   //
   // Set specific log levels per logger
   // loggers:
@@ -146,7 +140,7 @@ export const config = {
   // Services take over a specific job you don't want to take care of. They enhance
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
-  services: ["chromedriver", "geckodriver"],
+  services: ["chromedriver"], //, "geckodriver"],
   //
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
@@ -204,7 +198,7 @@ export const config = {
     // <number> timeout for step definitions
     timeout: 60000,
     // <boolean> Enable this config to treat undefined definitions as warnings.
-    ignoreUndefinedDefinitions: false,
+    ignoreUndefinedDefinitions: true,
   },
 
   //
@@ -259,8 +253,12 @@ export const config = {
    * @param {Array.<String>} specs        List of spec file paths that are to be run
    * @param {object}         browser      instance of created browser/device session
    */
-  // before: function (capabilities, specs) {
-  // },
+  before: function (capabilities, specs) {
+    browser.options["environment"] = config.environment;
+    browser.options["sauceDemoURL"] = config.sauceDemoURL;
+    browser.options["reqresBaseURL"] = config.reqresBaseURL;
+    browser.options["nopCommerceBaseURL"] = config.nopCommerceBaseURL;
+  },
   /**
    * Runs before a WebdriverIO command gets executed.
    * @param {string} commandName hook command name

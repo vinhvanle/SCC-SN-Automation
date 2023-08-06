@@ -6,7 +6,7 @@ import request from "supertest";
 // console.log(`>> Number of args: ${request.length}`); //1 args
 // console.log(`>> What is the definition of the function: ${request.toString()}`);
 /**
- *
+ * @param {string} testid
  * @param {string} baseURL
  * @param {string} endpoint
  * @param {string} authToken
@@ -19,7 +19,7 @@ let payload = {
   password: "pistol",
 };
 
-async function GET(baseURL, endpoint, authToken, queryParam) {
+async function GET(testid, baseURL, endpoint, authToken, queryParam) {
   if (!baseURL || !endpoint) {
     throw Error(
       `Given baseURL: ${baseURL}, or endpoint ${endpoint} is not valid`
@@ -40,7 +40,7 @@ async function GET(baseURL, endpoint, authToken, queryParam) {
   }
 }
 
-async function POST(baseURL, endpoint, authToken, payload) {
+async function POST(testid, baseURL, endpoint, authToken, payload) {
   if (!baseURL || !endpoint) {
     throw Error(
       `Given baseURL: ${baseURL}, or endpoint ${endpoint} is not valid`

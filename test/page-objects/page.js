@@ -3,6 +3,7 @@ import chai from "chai";
  * @param {WebdriverIO.Element} ele
  * @param {string} path 
  * @param {string} text
+ * @param {string} testid
  */
 
 export default class Page{

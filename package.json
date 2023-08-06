@@ -5,9 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "demo": "set DEBUG=N && set HEADLESS=N && npx wdio wdio.conf.js --cucumberOpts.tagExpression='@demo'",
-    "smoke": "set DEBUG=Y && set HEADLESS=Y && npx wdio wdio.conf.js --cucumberOpts.tagExpression='@smoke'",
-    "wdio": "wdio run ./wdio.conf.js"
+    "test:debug": "set DEBUG='Y' && set HEADLESS='N' && npx wdio config/wdio.test.conf.js --cucumberOpts.tagExpression='@demo'",
+    "test:demo": "set DEBUG='N' && set HEADLESS='N' && npx wdio config/wdio.test.conf.js --cucumberOpts.tagExpression='@demo'",
+    "test:smoke": "set DEBUG='N' && set HEADLESS='Y' && npx wdio config/wdio.test.conf.js --cucumberOpts.tagExpression='@smoke'",
+    "uat:demo": "set DEBUG='N' && set HEADLESS='Y' && npx wdio config/wdio.uat.conf.js --cucumberOpts.tagExpression='@smoke'",
+    "uat:smoke": "set DEBUG='Y' && set HEADLESS='Y' && npx wdio config/wdio.uat.conf.js --cucumberOpts.tagExpression='@smoke'"
   },
   "author": "VinhL",
   "license": "ISC",
