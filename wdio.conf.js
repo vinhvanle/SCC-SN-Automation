@@ -74,7 +74,7 @@ export const config = {
      * --auth-server-whitelist="_"
      */
     {
-      maxInstances: 5,
+      maxInstances: 3,
       browserName: "chrome",
       'goog:chromeOptions': {
         args:
@@ -83,14 +83,12 @@ export const config = {
       acceptInsecureCerts: true,
       timeouts: { implicit: 10000, pageLoad: 20000, script: 30000 },
     },
-    // {
-    //   maxInstances: 5,
-    //   browserName: "firefox",
-    //   "moz:firefoxOptions": {
-    //     "args": headless.toUpperCase() === "Y" ? ["-headless"] : []
-    //   },
-    //   acceptInsecureCerts: true,
-    // },
+    {
+      maxInstances: 3,
+      browserName: "firefox",
+      acceptInsecureCerts: true,
+      timeouts: { implicit: 10000, pageLoad: 20000, script: 30000 },
+    },
   ],
 
   //
@@ -140,7 +138,7 @@ export const config = {
   // Services take over a specific job you don't want to take care of. They enhance
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
-  services: ["chromedriver"], //, "geckodriver"],
+  services: ["chromedriver","geckodriver"], //, "geckodriver"],
   //
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber

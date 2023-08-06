@@ -38,7 +38,7 @@ class HomePage extends Page {
     }
   }
 
-  async enterPassword(password) {
+  async enterPassword(testid, password) {
     if (!password) throw Error(`Given password is not valid`);
     try {
       password = password.trim();
