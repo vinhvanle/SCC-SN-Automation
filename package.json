@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "sn:demo" :"set DEBUG='Y' && set HEADLESS='N' && npx wdio config/wdio.sn.conf.js --cucumberOpts.tagExpression='@demo'",
     "test:debug": "set DEBUG='Y' && set HEADLESS='N' && npx wdio config/wdio.test.conf.js --cucumberOpts.tagExpression='@demo'",
     "test:demo": "set DEBUG='N' && set HEADLESS='N' && npx wdio config/wdio.test.conf.js --cucumberOpts.tagExpression='@demo'",
     "test:smoke": "set DEBUG='N' && set HEADLESS='Y' && npx wdio config/wdio.test.conf.js --cucumberOpts.tagExpression='@smoke'",

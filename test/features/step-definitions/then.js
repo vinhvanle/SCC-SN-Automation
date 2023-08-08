@@ -5,7 +5,9 @@ import reporter from "../../helper/reporter.js";
 import fs from "fs";
 import CustList from "../../page-objects/nopCommerce.custlist.page.js";
 import nopCommerceCustlistPage from "../../page-objects/nopCommerce.custlist.page.js";
- 
+import snHomePage from "../../page-objects/sn.home.page.js";
+import constants from "../../../data/constants/constant.json" assert { type: "json"};
+import snNewArticleForm from "../../page-objects/sn.new.article.form.js";
 
 Then(
   /^Inventory page should (.*)\s?list (.*)$/,
@@ -105,4 +107,66 @@ Then(/^Verify if all users exist in customers list$/, async function() {
     throw e;    
   }
 
+})
+
+
+/**Service Now Steps */
+
+
+/**
+ * Navigate to module
+ * 
+ */
+Then(/^I navigate to "(.*)"$/, async function (module) {
+  let url = "";
+  switch (module) {
+    case 'Create New Article':
+      url = `${browser.options.devInstanceBaseURL}/${constants.SN.ARTICLES_CREATE_NEW}`;
+      break;
+  
+  }
+  try {
+    await snHomePage.navigateToModule(this.testid, url)
+    reporter.addStep(this.testid, 'info', `Navigate to ${module} successful`);
+  } catch (e) {
+    e.message = `${this.testid}: Failed at Navigating to ${module}`;
+    throw e;
+  }
+
+});
+
+
+/**
+ * Open a new article form:
+ * 1. choose knowledge base
+ * 2. choose article template
+ * 3. click next btn
+ */
+Then(/^I open new article form$/, async function() {
+  try {
+    /**1. choose knowledge base */
+    await snHomePage.clickWhenAvailable(this.testid, snHomePage.knowledgeBase);
+    reporter.addStep(this.testid, 'info', `Click knowledge base title successful`);
+    /**2. choose article template */
+    await snHomePage.clickWhenAvailable(this.testid, snHomePage.articleTemplate);
+    reporter.addStep(this.testid, 'info', `Click article template successful`);
+    /** 3. click next btn*/
+    await snHomePage.clickWhenAvailable(this.testid, snHomePage.navNextBtn);
+    reporter.addStep(this.testid, 'info', `Click knowledge base title successful`);
+    await browser.pause(10000);
+  } catch (e) {
+    e.message = `${this.testid}: Failed at opening new article form, ${e.message}`;
+    throw e;
+  }
+})
+
+Then(/^I fill in mandatory fields and submit$/, async function () {
+  try {
+    let text = `[AutomationTest] - New Article - ${this.testid}`;
+    await snNewArticleForm.submitForm(this.testid, text );
+    reporter.addStep(this.testid, 'info', `Article with Short description: ${text} submit successful`);
+  } catch (e) {
+    e.message = `${this.testid}: Failed at fill mandatory fields and submit, ${e.message}`;
+    throw e;
+  }
 })

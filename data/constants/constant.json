@@ -2,5 +2,9 @@
   "REQRES": {
     "GET_USERS": "/api/users",
     "QUERY_PARAM": { "pages": 2 }
+  },
+
+  "SN": {
+    "ARTICLES_CREATE_NEW": "kb_knowledge_create.do?sysparm_stack=kb_knowledge_list.do"
   }
 }

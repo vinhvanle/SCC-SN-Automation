@@ -1,5 +1,5 @@
 Feature: Customer search
-    @demo
+    # @demo
     Scenario Outline: <TestID>: Searh external customers
         Given Get list of users from reqres.in
         When As an admin user login to nocomerce site
