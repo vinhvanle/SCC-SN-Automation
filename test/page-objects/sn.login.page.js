@@ -54,7 +54,6 @@ class snLoginPage extends Page {
   async clickLoginBtn(testid) {
     try {
       await this.click(await this.loginBtn);
-      // await this.waitForPageLoadComplete();
       reporter.addStep(testid, "info", `Clicked Login button successfully`);
     } catch (e) {
       e.message = `Error clicking login button, ${e.message}`;
@@ -77,7 +76,6 @@ class snLoginPage extends Page {
     try {
       path = `${browser.options.devInstanceBaseURL}/logout.do`;
       await this.navigateTo(path);
-      // await this.waitForPageLoadComplete();
     } catch (e) {
       
     }

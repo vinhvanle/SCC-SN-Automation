@@ -32,15 +32,15 @@ class snRecordForm extends Page {
       switch (fieldName) {
         case "VERSION":
           let versionField = await this.versionField;
-          fieldValue = (
-            await versionField.getAttribute("value")
-          ).toUpperCase();
+          actualFieldValue = (
+            (await versionField.getAttribute("value")).toLocaleUpperCase()
+          );
           break;
         case "WORKFLOW":
           let workflowField = await this.workflowField;
-          fieldValue = (
-            await workflowField.getAttribute("value")
-          ).toUpperCase();
+          actualFieldValue = (
+            (await workflowField.getAttribute("value")).toLocaleUpperCase()
+          );
           break;
       }
       if (actualFieldValue === expectedFieldValue){

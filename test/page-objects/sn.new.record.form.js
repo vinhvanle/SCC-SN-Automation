@@ -71,7 +71,6 @@ class snNewRecordForm extends Page {
   async submitForm(testid, text) {
     try {
       await this.setShortDescription(testid, text);
-      // await this.waitForPageLoadComplete();
       try {
         await this.click(this.submitBtn);
         reporter.addStep(testid, "info", `Click Submit btn successful`);
@@ -79,7 +78,6 @@ class snNewRecordForm extends Page {
         e.message = `Error clicking submit button, ${e.message}`;
         throw e;
       }
-      // await this.waitForPageLoadComplete();
     } catch (e) {
       e.message = `Error submitting form, ${e.message}`;
       throw e;

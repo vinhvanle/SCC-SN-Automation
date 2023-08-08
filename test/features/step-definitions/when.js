@@ -26,8 +26,7 @@ When(/^As an (.*) user login to nocomerce site$/, async function (user) {
 When(/^(.*): I open the "(.*)" record$/, async function (testid, recordType) {
   if(!recordType) throw Error(`Given recordType: ${recordType} is not valid`);
   try {
-    recordType = recordType.toUpperCase();
-    // console.log(`>> article number: ${this.submittedArticleNumber}`);
+    recordType = recordType.trim().toUpperCase();
     reporter.addStep(this.testid, 'info', `Starting to openRecord`);
     await snList.openRecord(this.testid, this.submittedArticleNumber, recordType );
     reporter.addStep(this.testid, 'info', `Open record successful`);

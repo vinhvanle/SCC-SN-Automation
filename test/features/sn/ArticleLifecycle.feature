@@ -13,7 +13,7 @@ Feature: Article Lifecycle
         Then <TestID>: I fill in mandatory fields and submit
         When <TestID>: I open the "article" record
         Then <TestID>: I can verify its "Version" field is "0.01"
-        Then <TestID>: I cam verify its "Workflow" field is "Draft"
+        Then <TestID>: I can verify its "Workflow" field is "Draft"
 
         Examples:
             | TestID       | 

@@ -26,11 +26,15 @@ class snList extends Page {
        * What type of record is being looked up?
        */
       switch (recordType) {
-        case 'ARTICLE':
-          return eleArr = await this.articleNumberFields;
+        case "ARTICLE":
+          eleArr = await this.articleNumberFields;
+          break;
       }
-      
-      if(!number || !recordType) throw Error(`Given record number: ${number}, or record type: ${recordType} is not valid`);      
+
+      if (!number || !recordType)
+        throw Error(
+          `Given record number: ${number}, or record type: ${recordType} is not valid`
+        );
       let record;
       let correctRecordNumber;
       for (let i = 0; i < eleArr.length; i++) {
@@ -38,27 +42,30 @@ class snList extends Page {
         if (recordNumber === number) {
           correctRecordNumber = recordNumber;
           record = eleArr[i];
-          console.log(`index number: ${i}`);
-        } 
+        }
       }
-      console.log(`>> recordNumber: ${correctRecordNumber}`);
-      // console.log(`awaiting page load`);
-      // await this.waitForPageLoadComplete();
+
       try {
         await this.click(record);
-        reporter.addStep(testid, 'info', `Clicked record field ${correctRecordNumber} successfuly`);
+        reporter.addStep(
+          testid,
+          "info",
+          `Clicked record field ${correctRecordNumber} successfuly`
+        );
       } catch (e) {
         e.message = `${testid}: Failed at clicking the record ${correctRecordNumber}`;
       }
-      // console.log(`awaiting page load`);
-      // await this.waitForPageLoadComplete();
-      reporter.addStep(testid, 'info', `Open record number ${number} successful`);
-      
+    
+      reporter.addStep(
+        testid,
+        "info",
+        `Open record number ${number} successful`
+      );
     } catch (e) {
       console.log(`Error opening record ${number}, ${e}`);
       throw e;
     }
-  }  
+  }
 }
 
 export default new snList();

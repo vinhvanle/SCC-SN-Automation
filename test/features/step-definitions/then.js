@@ -182,13 +182,11 @@ Then(/^(.*): I fill in mandatory fields and submit$/, async function (testid) {
 Then(/^(.*): I can verify its "(.*)" field is "(.*)"$/, async function(testid, fieldName, expectedFieldValue) {
   reporter.addStep(this.testid, 'info', `Starting to verify ${fieldName} field value...`);
   try {
-    fieldName = fieldName.toUpperCase();
-    expectedFieldValue = expectedFieldValue.toUpperCase();
+    fieldName = fieldName.trim().toUpperCase();
+    expectedFieldValue = expectedFieldValue.trim().toUpperCase();
     await snRecordForm.verifyFieldState(this.testid, fieldName, expectedFieldValue);
-    reporter.addStep(this.testid, 'info', `Verify ${fieldName} field value successful`);
   } catch (e) {
     e.message = `${this.testid}: Failed at verifying ${fieldName} field value`;
     throw e;
   }
-  reporter.addStep(this.testid, 'info', `Verify ${fieldName} field value successful`);
 })
