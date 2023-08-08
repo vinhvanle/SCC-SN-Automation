@@ -103,12 +103,12 @@ Given(/^Get list of (.*) from reqres.in$/, async function (endpointRef) {
  * 3. knowledge_mananger === SN_KNOWLEDGE_MANAGER_USERNAME
  * 4. knowledge_admin === SN_KNOWLEDGE_ADMIN_USERNAME
  */
-Given(/As (a|an) "(.*)" user, I login to SN Dev Instance$/, async function (prefixTxt, user) {
-  
-  reporter.addStep(this.testid, "info", `Loging in to SN Dev Instance`);
+Given(/(.*): As (a|an) "(.*)" user, I login to SN Dev Instance$/, async function (testid, prefixTxt, user) {
+  reporter.addStep(this.testid, 'info', `Starting to login to SN Dev Instance`);
   try {
-    //Navigate to SN instance
-    await snLoginPage.navigateTo(browser.options.devInstanceBaseURL);
+    // navigate to SN 
+  
+    
     //Get username and password
     let username = "";
     let password = "";
@@ -130,13 +130,12 @@ Given(/As (a|an) "(.*)" user, I login to SN Dev Instance$/, async function (pref
         password = process.env.SN_KNOWLEDGE_ADMIN_PASSWORD;        
         break;
     }
-
-    console.log(`>> username: ${username}`);
-    console.log(`>> password: ${password}`);
     
     await snLoginPage.loginToSN(this.testid, username, password);
+    reporter.addStep(this.testid,'info', `>> Logged in as ${user} user, username: ${username} successful`);
   } catch (e) {
-    e.message = `${this.testid}: Failed at Navigating to Login page step, ${e.message}`;
+    e.message = `${this.testid}: Failed at Login to SN step, ${e.message}`;
     throw e;
   }
+  reporter.addStep(this.testid, 'info', `Login to SN Dev Instance successful`);
 });

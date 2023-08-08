@@ -3,10 +3,11 @@ import chai from "chai";
 import reporter from "../helper/reporter.js";
 import constants from "../../data/constants/constant.json" assert { type: "json" };
 
+
 /**
  * @param {string} testid
  */
-class snNewArticleForm extends Page {
+class snNewRecordForm extends Page {
   constructor() {
     super();
   }
@@ -39,44 +40,51 @@ class snNewArticleForm extends Page {
     return $(`/html//button[@id="sysverb_insert"]`);
   }
 
+  /**Define actions */
+
   
-
-
-  /**Define actions */ 
 
   async setShortDescription(testid, text) {
     try {
       (await this.shortDescription).waitForClickable();
       await this.typeInto(this.shortDescription, text);
-      reporter.addStep(testid, 'info', `Set shortDescription field successful`);
-    } catch (e) {    
+      reporter.addStep(testid, "info", `Set shortDescription field successful`);
+    } catch (e) {
       e.message = `Error seting short description, ${e.message}`;
+      throw e;
+    }
+  }
+
+  async getNumberField() {
+    try {
+      let html = await this.numberField.getHTML();
+      let breakpoint = " ";
+      let delimeter = '"';
+      let number = html.split(breakpoint)[4].split(delimeter)[1];
+      return number;
+    } catch (e) {
+      e.message = `Error getting number field, ${e.message}`;
       throw e;
     }
   }
 
   async submitForm(testid, text) {
     try {
-      let articleNumber = (await this.numberField).getAttribute('value');
-      console.log(`>> Article number: ${articleNumber}`);
       await this.setShortDescription(testid, text);
+      // await this.waitForPageLoadComplete();
       try {
         await this.click(this.submitBtn);
-        reporter.addStep(testid, 'info', `Click Submit btn successful`);
+        reporter.addStep(testid, "info", `Click Submit btn successful`);
       } catch (e) {
         e.message = `Error clicking submit button, ${e.message}`;
         throw e;
       }
-      return articleNumber;
+      // await this.waitForPageLoadComplete();
     } catch (e) {
       e.message = `Error submitting form, ${e.message}`;
       throw e;
     }
   }
-
-  
-
-
 }
 
-export default new snNewArticleForm();
+export default new snNewRecordForm();

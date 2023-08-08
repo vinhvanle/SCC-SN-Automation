@@ -282,6 +282,7 @@ export const config = {
    */
   beforeScenario: function (world, context) {
     let arr = world.pickle.name.split(/:/);
+    
     if (arr.length > 0) {
       Object.assign(context, { testid: arr[0] });
       this.testid = context.testid;

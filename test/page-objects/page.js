@@ -33,4 +33,16 @@ export default class Page{
         }
         await ele.setValue(text)
     }
+
+    async waitForPageLoadComplete() {
+        browser.waitUntil(
+            () => browser.execute(() => document.readyState === 'complete'),
+            {
+              timeout: 60 * 1000, // 60 seconds
+              timeoutMsg: 'Page load failure'
+            }
+          );
+    }
+
+    
 }

@@ -25,14 +25,14 @@ class snLoginPage extends Page {
   }
 
   /**Define actions */
- 
+
 
   async enterUsername(testid, username) {
     if (!username) throw Error(`Given username: ${username} is not valid`);
     try {
       username = username.trim();
       await this.typeInto(this.usernameInputBox, username);
-      reporter.addStep(testid, 'info', `Username entered successfully`);
+      reporter.addStep(testid, "info", `Username entered successfully`);
     } catch (e) {
       e.message = `Error entering username: ${username}, ${e.message}`;
       throw e;
@@ -44,7 +44,7 @@ class snLoginPage extends Page {
     try {
       password = password.trim();
       await this.typeInto(this.passwordInputBox, password);
-      reporter.addStep(testid, 'info', `Password entered successfully`);
+      reporter.addStep(testid, "info", `Password entered successfully`);
     } catch (e) {
       e.message = `Error entering password, ${e.message}`;
       throw e;
@@ -54,7 +54,8 @@ class snLoginPage extends Page {
   async clickLoginBtn(testid) {
     try {
       await this.click(await this.loginBtn);
-      reporter.addStep(testid, 'info', `Clicked Login button successfully`);
+      // await this.waitForPageLoadComplete();
+      reporter.addStep(testid, "info", `Clicked Login button successfully`);
     } catch (e) {
       e.message = `Error clicking login button, ${e.message}`;
       throw e;
@@ -63,13 +64,24 @@ class snLoginPage extends Page {
 
   async loginToSN(testid, username, password) {
     try {
-        await this.enterUsername(testid, username);
-        await this.enterPassword(testid, password);
-        await this.clickLoginBtn(testid);
+      await this.navigateTo(browser.options.devInstanceBaseURL);
+      await this.enterUsername(testid, username);
+      await this.enterPassword(testid, password);
+      await this.clickLoginBtn(testid);
     } catch (e) {
-        throw e;
+      throw e;
     }
   }
+
+  async logoutSN(testid) {
+    try {
+      path = `${browser.options.devInstanceBaseURL}/logout.do`;
+      await this.navigateTo(path);
+      // await this.waitForPageLoadComplete();
+    } catch (e) {
+      
+    }
+  } 
 }
 
 export default new snLoginPage();

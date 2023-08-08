@@ -2,6 +2,7 @@ import { When } from "@wdio/cucumber-framework";
 import chai from "chai";
 import reporter from "../../helper/reporter.js";
 import nopCommerceHomePage from "../../page-objects/nopCommerce.home.page.js";
+import snList from "../../page-objects/sn.list.js";
 
 When(/^As an (.*) user login to nocomerce site$/, async function (user) {
   if (!user) throw Error(`Given user: ${user} is not valid`);
@@ -21,6 +22,19 @@ When(/^As an (.*) user login to nocomerce site$/, async function (user) {
   }
 });
 
-// When(/^Search users in customer list$/, async function () {
 
-// });
+When(/^(.*): I open the "(.*)" record$/, async function (testid, recordType) {
+  if(!recordType) throw Error(`Given recordType: ${recordType} is not valid`);
+  try {
+    recordType = recordType.toUpperCase();
+    // console.log(`>> article number: ${this.submittedArticleNumber}`);
+    reporter.addStep(this.testid, 'info', `Starting to openRecord`);
+    await snList.openRecord(this.testid, this.submittedArticleNumber, recordType );
+    reporter.addStep(this.testid, 'info', `Open record successful`);
+  } catch (e) {
+    e.message = `${this.testid}: Failed when getting record name list, ${e.message}`;
+    throw e;
+  }
+}) 
+
+
