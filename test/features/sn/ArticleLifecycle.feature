@@ -14,6 +14,10 @@ Feature: Article Lifecycle
         When <TestID>: I open the "article" record
         Then <TestID>: I can verify its "Version" field is "0.01"
         Then <TestID>: I can verify its "Workflow" field is "Draft"
+        Then <TestID>: I logout of SN
+        Given <TestID>: As a "knowledge manager" user, I login to SN Dev Instance
+        Then <TestID>: I open the "article" list
+
 
         Examples:
             | TestID       | 

@@ -6,10 +6,11 @@ import fs from "fs";
 import CustList from "../../page-objects/nopCommerce.custlist.page.js";
 import nopCommerceCustlistPage from "../../page-objects/nopCommerce.custlist.page.js";
 import snHomePage from "../../page-objects/sn.home.page.js";
-import constants from "../../../data/constants/constant.json" assert { type: "json"};
+import constants from "../../../data/constants/constant.json" assert { type: "json" };
 import snNewRecordForm from "../../page-objects/sn.new.record.form.js";
 import snList from "../../page-objects/sn.list.js";
 import snRecordForm from "../../page-objects/sn.record.form.js";
+import snLoginPage from "../../page-objects/sn.login.page.js";
 
 Then(
   /^Inventory page should (.*)\s?list (.*)$/,
@@ -22,7 +23,13 @@ Then(
       try {
         chai.expect(eleArr.length).to.equal(parseInt(noOfProducts));
       } catch (e) {
-        reporter.addStep(this.testid, 'error', 'Known issue - product count mismatch', true, 'JIRA-123');
+        reporter.addStep(
+          this.testid,
+          "error",
+          "Known issue - product count mismatch",
+          true,
+          "JIRA-123"
+        );
         throw e;
       }
     } catch (e) {
@@ -60,7 +67,6 @@ Then(/^Validate all products have valid price$/, async function () {
   }
 });
 
-
 /**
  * Verify if given user exists in customers list
  * Sub-steps:
@@ -71,18 +77,23 @@ Then(/^Validate all products have valid price$/, async function () {
  * - Search and confirm if user exists
  * 4. In case user does not exist, write it to error file
  */
-Then(/^Verify if all users exist in customers list$/, async function() {
-
+Then(/^Verify if all users exist in customers list$/, async function () {
   try {
     /** 1. Navigate/ select Customer option from left menu*/
-    await browser.url(`${browser.options.nopCommerceBaseURL}/Admin/Customer/List`);
-    reporter.addStep(this.testid, 'info', `Navigating to customer list screen... ${browser.options.nopCommerceBaseURL}/Admin/Customer/List`);
-  
+    await browser.url(
+      `${browser.options.nopCommerceBaseURL}/Admin/Customer/List`
+    );
+    reporter.addStep(
+      this.testid,
+      "info",
+      `Navigating to customer list screen... ${browser.options.nopCommerceBaseURL}/Admin/Customer/List`
+    );
+
     /**  2. Read API res from /data folder*/
     let filename = `${process.cwd()}/data/api-res/reqresAPIUsers.json`;
-    let data = fs.readFileSync(filename, 'utf8');
+    let data = fs.readFileSync(filename, "utf8");
     let dataObj = JSON.parse(data);
-  
+
     /** 3. For each user object in API res:*/
     let numOfObj = dataObj.data.length;
     let arr = [];
@@ -90,14 +101,18 @@ Then(/^Verify if all users exist in customers list$/, async function() {
       let obj = {};
       let firstname = dataObj.data[i].first_name;
       let lastname = dataObj.data[i].last_name;
-      let custNotFound = await nopCommerceCustlistPage.searchNameAndConfirm(this.testid, firstname, lastname);
+      let custNotFound = await nopCommerceCustlistPage.searchNameAndConfirm(
+        this.testid,
+        firstname,
+        lastname
+      );
       if (custNotFound) {
         obj["firstname"] = firstname;
         obj["lastname"] = lastname;
         arr.push(obj);
       }
     }
-  
+
     /** 4. In case user does not exist, write it to error file*/
     if (arr.length) {
       let data = JSON.stringify(arr, undefined, 4);
@@ -106,37 +121,31 @@ Then(/^Verify if all users exist in customers list$/, async function() {
     }
   } catch (e) {
     e.message = `${this.testid}: Failed at checking users in nopCommerce site, ${e.message}`;
-    throw e;    
+    throw e;
   }
-
-})
-
+});
 
 /**Service Now Steps */
 
-
 /**
  * Navigate to module
- * 
+ *
  */
 Then(/^(.*): I navigate to "(.*)"$/, async function (testid, module) {
   let url = "";
   switch (module) {
-    case 'Create New Article':
+    case "Create New Article":
       url = `${browser.options.devInstanceBaseURL}/${constants.SN.ARTICLES_CREATE_NEW}`;
       break;
-  
   }
   try {
-    await snHomePage.navigateToModule(this.testid, url)
-    reporter.addStep(this.testid, 'info', `Navigate to ${module} successful`);
+    await snHomePage.navigateToModule(this.testid, url);
+    reporter.addStep(this.testid, "info", `Navigate to ${module} successful`);
   } catch (e) {
     e.message = `${this.testid}: Failed at Navigating to ${module}`;
     throw e;
   }
-
 });
-
 
 /**
  * Open a new article form:
@@ -144,49 +153,82 @@ Then(/^(.*): I navigate to "(.*)"$/, async function (testid, module) {
  * 2. choose article template
  * 3. click next btn
  */
-Then(/^(.*): I open new article form$/, async function(testid) {
-  reporter.addStep(this.testid, 'info', `Starting to open new article form...`);
+Then(/^(.*): I open new article form$/, async function (testid) {
+  reporter.addStep(this.testid, "info", `Starting to open new article form...`);
   try {
     /**1. choose knowledge base */
     await snHomePage.clickWhenAvailable(this.testid, snHomePage.knowledgeBase);
-    reporter.addStep(this.testid, 'info', `Click knowledge base title successful`);
+    reporter.addStep(
+      this.testid,
+      "info",
+      `Click knowledge base title successful`
+    );
     /**2. choose article template */
-    await snHomePage.clickWhenAvailable(this.testid, snHomePage.articleTemplate);
-    reporter.addStep(this.testid, 'info', `Click article template successful`);
+    await snHomePage.clickWhenAvailable(
+      this.testid,
+      snHomePage.articleTemplate
+    );
+    reporter.addStep(this.testid, "info", `Click article template successful`);
     /** 3. click next btn*/
     await snHomePage.clickWhenAvailable(this.testid, snHomePage.navNextBtn);
-    reporter.addStep(this.testid, 'info', `Click next Button successful`);
-    
+    reporter.addStep(this.testid, "info", `Click next Button successful`);
   } catch (e) {
     e.message = `${this.testid}: Failed at opening new article form, ${e.message}`;
     throw e;
   }
-  reporter.addStep(this.testid, 'info', `Open new article form successful...`);
-})
+  reporter.addStep(this.testid, "info", `Open new article form successful...`);
+});
 
 Then(/^(.*): I fill in mandatory fields and submit$/, async function (testid) {
-  reporter.addStep(this.testid, 'info', `Starting to fill in mandatory fields`);
+  reporter.addStep(this.testid, "info", `Starting to fill in mandatory fields`);
   try {
-    this.submittedArticleNumber = await snNewRecordForm.getNumberField(this.testid);
+    this.submittedArticleNumber = await snNewRecordForm.getNumberField(
+      this.testid
+    );
     let text = `[AutomationTest] - New Article - ${this.testid}`;
     await snNewRecordForm.submitForm(this.testid, text);
-    
-      
   } catch (e) {
     e.message = `${this.testid}: Failed at fill mandatory fields and submit, ${e.message}`;
     throw e;
   }
-  reporter.addStep(this.testid, 'info', `Submit record successful`); 
-})
+  reporter.addStep(this.testid, "info", `Submit record successful`);
+});
 
-Then(/^(.*): I can verify its "(.*)" field is "(.*)"$/, async function(testid, fieldName, expectedFieldValue) {
-  reporter.addStep(this.testid, 'info', `Starting to verify ${fieldName} field value...`);
-  try {
-    fieldName = fieldName.trim().toUpperCase();
-    expectedFieldValue = expectedFieldValue.trim().toUpperCase();
-    await snRecordForm.verifyFieldState(this.testid, fieldName, expectedFieldValue);
-  } catch (e) {
-    e.message = `${this.testid}: Failed at verifying ${fieldName} field value`;
-    throw e;
+Then(
+  /^(.*): I can verify its "(.*)" field is "(.*)"$/,
+  async function (testid, fieldName, expectedFieldValue) {
+    reporter.addStep(
+      this.testid,
+      "info",
+      `Starting to verify ${fieldName} field value...`
+    );
+    try {
+      fieldName = fieldName.trim().toUpperCase();
+      expectedFieldValue = expectedFieldValue.trim().toUpperCase();
+      await snRecordForm.verifyFieldState(
+        this.testid,
+        fieldName,
+        expectedFieldValue
+      );
+    } catch (e) {
+      e.message = `${this.testid}: Failed at verifying ${fieldName} field value`;
+      throw e;
+    }
   }
-})
+);
+
+Then(/^I logout of SN$/, async function () {
+  try {
+    await snLoginPage.logoutSN();
+  } catch (e) {
+    e.message = `${this.testid}: Failed at logging out of SN`;
+  }
+});
+
+Then(/^I open the "(.*)" list$/, async function (recordType) {
+  try {
+    
+  } catch (e) {
+    
+  }
+});
