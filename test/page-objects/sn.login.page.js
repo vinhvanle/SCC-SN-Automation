@@ -26,7 +26,6 @@ class snLoginPage extends Page {
 
   /**Define actions */
 
-
   async enterUsername(testid, username) {
     if (!username) throw Error(`Given username: ${username} is not valid`);
     try {
@@ -74,12 +73,15 @@ class snLoginPage extends Page {
 
   async logoutSN(testid) {
     try {
-      path = `${browser.options.devInstanceBaseURL}/logout.do`;
+      let link = browser.options.devInstanceBaseURL;
+      let path = `${link}/logout.do`;
       await this.navigateTo(path);
+      reporter.addStep(testid, "info", `${testid}: Logout of SN successful`);
     } catch (e) {
-      
+      e.message = `${testid}: Failed at logoutSN, ${e.message}`;
+      throw e;
     }
-  } 
+  }
 }
 
 export default new snLoginPage();

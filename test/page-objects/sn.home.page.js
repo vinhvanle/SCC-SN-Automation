@@ -21,21 +21,26 @@ class snHomePage extends Page {
   }
 
   get navNextBtn() {
-    return $(`/html//div[@class='main-content ng-scope']/nav[1]//button[@class='btn btn-primary next-btn']`);
+    return $(
+      `/html//div[@class='main-content ng-scope']/nav[1]//button[@class='btn btn-primary next-btn']`
+    );
   }
-  /**Define actions */ 
+  /**Define actions */
 
   async navigateToModule(testid, url) {
     try {
       await this.navigateTo(url);
-      await this.knowledgeBase.waitForClickable();
-      reporter.addStep(testid, 'info', `Successfully navigated to: ${url}`);
+      reporter.addStep(
+        testid,
+        "info",
+        `Successfully navigated to module: ${url}`
+      );
     } catch (e) {
-      e.message = `${testid}: Failed at navigatetoModule, url: ${url}`;
+      e.message = `${testid}: Failed at navigateto Module, url: ${url}`;
     }
   }
-  
-  async clickWhenAvailable(testid, ele){
+
+  async clickWhenAvailable(testid, ele) {
     try {
       await ele.waitForClickable();
       await this.click(ele);
@@ -44,29 +49,30 @@ class snHomePage extends Page {
     }
   }
 
-  async openCreateNewArticlePage(testid, url) {
+  async openCreateNewArticlePage(testid) {
     try {
-      await this.navigateTo(`${browser.options.devInstanceBaseURL}/${constants.SN.ARTICLES_CREATE_NEW}`);
-      reporter.addStep(testid, 'info', `Clicked Article > Create New successful`);
+      await this.navigateTo(
+        `${browser.options.devInstanceBaseURL}/${constants.SN.ARTICLES_CREATE_NEW}`
+      );
+      reporter.addStep(
+        testid,
+        "info",
+        `Clicked Article > Create New successful`
+      );
       await this.knowledgeBase.waitForDisplayed();
       await this.click(this.knowledgeBase);
-      reporter.addStep(testid, 'info', `Clicked knowledge base successful`);
+      reporter.addStep(testid, "info", `Clicked knowledge base successful`);
       await this.articleTemplate.waitForClickable();
       await this.click(this.articleTemplate);
-      reporter.addStep(testid, 'info', `Clicked article template successful `);
+      reporter.addStep(testid, "info", `Clicked article template successful `);
       await this.navNextBtn.waitForClickable();
       await this.click(this.navNextBtn);
-      reporter.addStep(testid, 'info', `Clicked Next Nav button successful`);
-
+      reporter.addStep(testid, "info", `Clicked Next Nav button successful`);
     } catch (e) {
       e.message = `Error navigating to New Article page, ${e.message}`;
       throw e;
     }
   }
-
-  
-
-
 }
 
 export default new snHomePage();

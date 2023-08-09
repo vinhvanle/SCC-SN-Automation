@@ -2,7 +2,7 @@ import { Then } from "@wdio/cucumber-framework";
 import chai from "chai";
 import logger from "../../helper/logger.js";
 import reporter from "../../helper/reporter.js";
-import fs from "fs";
+import fs, { link } from "fs";
 import CustList from "../../page-objects/nopCommerce.custlist.page.js";
 import nopCommerceCustlistPage from "../../page-objects/nopCommerce.custlist.page.js";
 import snHomePage from "../../page-objects/sn.home.page.js";
@@ -11,6 +11,7 @@ import snNewRecordForm from "../../page-objects/sn.new.record.form.js";
 import snList from "../../page-objects/sn.list.js";
 import snRecordForm from "../../page-objects/sn.record.form.js";
 import snLoginPage from "../../page-objects/sn.login.page.js";
+import { url } from "inspector";
 
 Then(
   /^Inventory page should (.*)\s?list (.*)$/,
@@ -138,13 +139,8 @@ Then(/^(.*): I navigate to "(.*)"$/, async function (testid, module) {
       url = `${browser.options.devInstanceBaseURL}/${constants.SN.ARTICLES_CREATE_NEW}`;
       break;
   }
-  try {
-    await snHomePage.navigateToModule(this.testid, url);
-    reporter.addStep(this.testid, "info", `Navigate to ${module} successful`);
-  } catch (e) {
-    e.message = `${this.testid}: Failed at Navigating to ${module}`;
-    throw e;
-  }
+  await snHomePage.navigateToModule(this.testid, url);
+  reporter.addStep(this.testid, "info", `Navigate to ${module} successful`);
 });
 
 /**
@@ -153,45 +149,33 @@ Then(/^(.*): I navigate to "(.*)"$/, async function (testid, module) {
  * 2. choose article template
  * 3. click next btn
  */
-Then(/^(.*): I open new article form$/, async function (testid) {
-  reporter.addStep(this.testid, "info", `Starting to open new article form...`);
-  try {
-    /**1. choose knowledge base */
-    await snHomePage.clickWhenAvailable(this.testid, snHomePage.knowledgeBase);
-    reporter.addStep(
-      this.testid,
-      "info",
-      `Click knowledge base title successful`
-    );
-    /**2. choose article template */
-    await snHomePage.clickWhenAvailable(
-      this.testid,
-      snHomePage.articleTemplate
-    );
-    reporter.addStep(this.testid, "info", `Click article template successful`);
-    /** 3. click next btn*/
-    await snHomePage.clickWhenAvailable(this.testid, snHomePage.navNextBtn);
-    reporter.addStep(this.testid, "info", `Click next Button successful`);
-  } catch (e) {
-    e.message = `${this.testid}: Failed at opening new article form, ${e.message}`;
-    throw e;
+Then(/^(.*): I open new "(.*)" form$/, async function (testid, articleType) {
+  reporter.addStep(
+    this.testid,
+    "info",
+    `Starting to open new ${articleType} form...`
+  );
+  switch (articleType.toUpperCase()) {
+    case "ARTICLE":
+      await snHomePage.openCreateNewArticlePage(this.testid);
+      break;
   }
   reporter.addStep(this.testid, "info", `Open new article form successful...`);
 });
 
+//Need generalization
 Then(/^(.*): I fill in mandatory fields and submit$/, async function (testid) {
   reporter.addStep(this.testid, "info", `Starting to fill in mandatory fields`);
-  try {
-    this.submittedArticleNumber = await snNewRecordForm.getNumberField(
-      this.testid
-    );
-    let text = `[AutomationTest] - New Article - ${this.testid}`;
-    await snNewRecordForm.submitForm(this.testid, text);
-  } catch (e) {
-    e.message = `${this.testid}: Failed at fill mandatory fields and submit, ${e.message}`;
-    throw e;
-  }
-  reporter.addStep(this.testid, "info", `Submit record successful`);
+  this.submittedArticleNumber = await snNewRecordForm.getNumberField(
+    this.testid
+  );
+  let text = `[AutomationTest] - New Article - ${this.testid}`;
+  await snNewRecordForm.submitForm(this.testid, text);
+  reporter.addStep(
+    this.testid,
+    "info",
+    `Submit record ${this.submittedArticleNumber} successful`
+  );
 });
 
 Then(
@@ -202,33 +186,36 @@ Then(
       "info",
       `Starting to verify ${fieldName} field value...`
     );
-    try {
-      fieldName = fieldName.trim().toUpperCase();
-      expectedFieldValue = expectedFieldValue.trim().toUpperCase();
-      await snRecordForm.verifyFieldState(
-        this.testid,
-        fieldName,
-        expectedFieldValue
-      );
-    } catch (e) {
-      e.message = `${this.testid}: Failed at verifying ${fieldName} field value`;
-      throw e;
-    }
+    fieldName = fieldName.trim().toUpperCase();
+    expectedFieldValue = expectedFieldValue.trim().toUpperCase();
+    await snRecordForm.verifyFieldState(
+      this.testid,
+      fieldName,
+      expectedFieldValue
+    );
   }
 );
 
-Then(/^I logout of SN$/, async function () {
-  try {
-    await snLoginPage.logoutSN();
-  } catch (e) {
-    e.message = `${this.testid}: Failed at logging out of SN`;
-  }
+Then(/^(.*): I logout of SN$/, async function (testid) {
+  await snLoginPage.logoutSN(this.testid);
 });
 
-Then(/^I open the "(.*)" list$/, async function (recordType) {
-  try {
-    
-  } catch (e) {
-    
+Then(/^(.*): I open the "(.*)" list$/, async function (testid, recordType) {
+  let link;
+  switch (recordType.toUpperCase()) {
+    case "ARTICLE":
+      link = `${browser.options.devInstanceBaseURL}/${constants.SN.ARTICLE_LIST}`;
+      break;
+  }
+  await snHomePage.navigateToModule(this.testid, link);
+});
+
+Then(/^(.*): I can click "(.*)" UI Action$/, async function (testid, button) {
+  let message;
+  switch (button.toUpperCase()) {
+    case "PUBLISH":
+      message = "This knowledge item is in review";
+      await snRecordForm.clickUIAction(this.testid, button, message);
+      break;
   }
 });

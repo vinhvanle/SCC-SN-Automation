@@ -5,6 +5,7 @@
   },
 
   "SN": {
-    "ARTICLES_CREATE_NEW": "kb_knowledge_create.do?sysparm_stack=kb_knowledge_list.do"
+    "ARTICLES_CREATE_NEW": "kb_knowledge_create.do?sysparm_stack=kb_knowledge_list.do",
+    "ARTICLE_LIST": "kb_knowledge_list.do"
   }
 }

@@ -3,7 +3,6 @@ import chai from "chai";
 import reporter from "../helper/reporter.js";
 import constants from "../../data/constants/constant.json" assert { type: "json" };
 
-
 /**
  * @param {string} testid
  */
@@ -42,8 +41,6 @@ class snNewRecordForm extends Page {
 
   /**Define actions */
 
-  
-
   async setShortDescription(testid, text) {
     try {
       (await this.shortDescription).waitForClickable();
@@ -67,7 +64,7 @@ class snNewRecordForm extends Page {
       throw e;
     }
   }
-
+  // Need generalization
   async submitForm(testid, text) {
     try {
       await this.setShortDescription(testid, text);
